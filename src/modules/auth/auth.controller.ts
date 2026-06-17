@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import Auth from "../../services/auth/index.js";
+import Auth from "./auth.service.js";
 import {
   hashPassword,
   signWithJWT,

@@ -2,7 +2,7 @@ import "dotenv/config";
 import express from "express";
 import type { Request, Response, NextFunction } from "express";
 import { prisma } from "./config/prisma.js";
-import { signUpRoute } from "./routes/index.js";
+import signUpRoute from "./modules/auth/auth.route.js";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
@@ -13,10 +13,6 @@ app.use(express.json());
 app.get("/health", (_req: Request, res: Response) => {
   res.json({ status: "ok", uptime: process.uptime() });
 });
-
-// Routes — mount your feature routers here later, e.g.:
-// import userRoutes from "./routes/user.routes.js";
-// app.use("/api/users", userRoutes);
 
 // 404 handler
 app.use((_req: Request, res: Response) => {
