@@ -64,7 +64,7 @@ async function signUpUser(req: Request, res: Response) {
   }
 }
 
-async function signUp(req: Request, res: Response) {
+async function signInUser(req: Request, res: Response) {
   try {
     const { email, password }: SignUpUser = req.body;
 
@@ -100,6 +100,13 @@ async function signUp(req: Request, res: Response) {
 
     const token = signWithJWT(req.body);
 
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      maxAge: 15 * 60 * 1000,
+    });
+
     return res.status(200).json({
       message: "Login Successful",
       data: { ...req.body, token },
@@ -112,4 +119,4 @@ async function signUp(req: Request, res: Response) {
   }
 }
 
-export { signUpUser, signUp };
+export { signUpUser, signInUser };
