@@ -9,14 +9,14 @@ const PORT = Number(process.env.PORT) || 3000;
 
 app.use(express.json());
 
+// Welcome note
+app.get("/api/v1", (_req: Request, res: Response) => {
+  res.json({ message: "Welcome to Tournament", data: [] });
+});
+
 // Health check
 app.get("/health", (_req: Request, res: Response) => {
   res.json({ status: "ok", uptime: process.uptime() });
-});
-
-// 404 handler
-app.use((_req: Request, res: Response) => {
-  res.status(404).json({ error: "Not Found" });
 });
 
 // Central error handler
@@ -26,7 +26,7 @@ app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
 });
 
 // Auth routes
-app.use("/api/auth/", signUpRoute);
+app.use("/api/v1/auth/", signUpRoute);
 
 async function startServer() {
   try {

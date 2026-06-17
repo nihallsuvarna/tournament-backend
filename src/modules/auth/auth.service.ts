@@ -14,7 +14,7 @@ export default class Auth {
     return await prisma.userRole.create({
       data: {
         user_id: user.id,
-        role_id: 1,
+        role_id: 2,
       },
     });
   }

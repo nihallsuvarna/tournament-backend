@@ -93,7 +93,7 @@ async function signInUser(req: Request, res: Response) {
     const compare = await verifyPassword(password, user.password);
     if (!compare) {
       return res.status(404).json({
-        message: "Password not matching",
+        message: "Credentials are incorrect",
         data: null,
       });
     }
