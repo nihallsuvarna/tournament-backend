@@ -12,6 +12,22 @@ datasource db {
   provider = "postgresql"
 }
 
+generator zod {
+  provider = "zod-prisma-types"
+  output   = "./generated/zod" // Destination for your zod schemas
+}
+
+enum Gender {
+  Male
+  Female
+}
+
+enum PaymentStatus {
+  Pending
+  Success
+  Failure
+}
+
 model User {
   id        Int        @id @default(autoincrement())
   email     String     @unique
@@ -62,4 +78,63 @@ model UserRole {
   role         Role        @relation(fields: [role_id], references: [id])
   permission   Permission? @relation(fields: [permissionId], references: [id])
   permissionId Int?
+}
+
+model Tournament {
+  id                      Int                      @id @default(autoincrement())
+  name                    String
+  description             String
+  sportType               String
+  startDate               DateTime
+  endDate                 DateTime
+  location                String
+  status                  Boolean
+  maxTeams                Int
+  entryFee                Int
+  prizePool               Int
+  banner                  String
+  rules                   String
+  tournamentRegistrations TournamentRegistration[]
+}
+
+model Season {
+  id         Int      @id @default(autoincrement())
+  seasonName String
+  year       Int
+  startDate  DateTime
+  endDate    DateTime
+}
+
+model Player {
+  id           Int      @id @default(autoincrement())
+  name         String
+  dob          DateTime
+  gender       Gender
+  country      String
+  position     Int
+  jerseyNumber Int
+  height       Int
+  weight       Int
+  teams        Team[]
+}
+
+model Team {
+  id                      Int                      @id @default(autoincrement())
+  name                    String
+  logo                    String
+  captain_id              Int
+  captain                 Player                   @relation(fields: [captain_id], references: [id])
+  coachName               String
+  homeGround              Boolean
+  tournamentRegistrations TournamentRegistration[]
+}
+
+model TournamentRegistration {
+  id            Int           @id @default(autoincrement())
+  team_id       Int
+  team          Team          @relation(fields: [team_id], references: [id])
+  tournament_id Int
+  tournament    Tournament    @relation(fields: [tournament_id], references: [id])
+  status        Boolean
+  paymentStatus PaymentStatus
 }
